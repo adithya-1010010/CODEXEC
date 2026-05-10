@@ -1,0 +1,253 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CODEXEC — Settings</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="settings.css" />
+    <style></style>
+  </head>
+  <body>
+    <div class="grid-bg"></div>
+
+    <nav class="nav">
+      <a class="nav-logo" href="map.html">CODEXEC</a>
+      <div class="nav-links">
+        <button class="nav-link" onclick="location.href = 'map.html'">
+          Map
+        </button>
+        <button class="nav-link" onclick="location.href = 'profile.html'">
+          Profile
+        </button>
+      </div>
+      <div class="nav-right">
+        <a class="nav-about" href="about.html">About</a>
+        <div
+          class="nav-avatar"
+          onclick="location.href = 'settings.html'"
+          title="Settings"
+          id="nav-avatar-img"
+          style="outline: 1px solid var(--accent-dim); outline-offset: 2px"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="8" r="4" />
+            <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" />
+          </svg>
+        </div>
+      </div>
+    </nav>
+    <div class="settings-page">
+      <div class="settings-header">
+        <div class="settings-title">SETTINGS</div>
+        <div class="settings-sub">Manage your account and preferences</div>
+      </div>
+
+      <form onsubmit="return false;">
+        <!-- PROFILE -->
+        <div class="settings-section">
+          <div class="settings-section-header">PROFILE</div>
+          <div class="settings-row">
+            <label class="settings-row-left" for="input-username">
+              <span class="settings-row-label">Username</span>
+              <span class="settings-row-desc">Your public display name</span>
+            </label>
+            <input
+              class="settings-input"
+              type="text"
+              id="input-username"
+              value="devlancer"
+              onclick="markDirty()"
+            />
+          </div>
+          <div class="settings-row">
+            <label class="settings-row-left" for="input-email">
+              <span class="settings-row-label">Email</span>
+              <span class="settings-row-desc"
+                >Used for login and notifications</span
+              >
+            </label>
+            <input
+              class="settings-input"
+              type="email"
+              id="input-email"
+              value="dev@codexec.io"
+              onclick="markDirty()"
+            />
+          </div>
+          <div class="settings-row">
+            <label class="settings-row-left" for="input-bio">
+              <span class="settings-row-label">Bio</span>
+              <span class="settings-row-desc"
+                >Shown on your public profile</span
+              >
+            </label>
+            <textarea
+              class="settings-input"
+              type="text"
+              id="input-bio"
+              placeholder="enter your Bio"
+              onclick="markDirty()"
+            ></textarea>
+          </div>
+        </div>
+
+        <!-- APPEARANCE -->
+        <div class="settings-section">
+          <div class="settings-section-header">APPEARANCE</div>
+          <div class="settings-row">
+            <label class="settings-row-left" for="select-theme">
+              <span class="settings-row-label">Theme</span>
+              <span class="settings-row-desc">Color scheme for the UI</span>
+            </label>
+            <select
+              class="settings-select"
+              id="select-theme"
+              onclick="markDirty()"
+            >
+              <option selected>Dark (Default)</option>
+              <option>OLED Black</option>
+            </select>
+          </div>
+          <div class="settings-row">
+            <label class="settings-row-left" for="toggle-animations">
+              <span class="settings-row-label">Animations</span>
+              <span class="settings-row-desc">Enable UI motion effects</span>
+            </label>
+            <label class="toggle-wrap">
+              <input
+                type="checkbox"
+                id="toggle-animations"
+                checked
+                onclick="markDirty()"
+              />
+              <div class="toggle-track"><div class="toggle-thumb"></div></div>
+            </label>
+          </div>
+        </div>
+
+        <!-- PRIVACY -->
+        <div class="settings-section">
+          <div class="settings-section-header">// PRIVACY</div>
+          <div class="settings-row">
+            <label class="settings-row-left" for="toggle-public">
+              <span class="settings-row-label">Public Profile</span>
+              <span class="settings-row-desc"
+                >Let others find and view your profile</span
+              >
+            </label>
+            <label class="toggle-wrap">
+              <input
+                type="checkbox"
+                id="toggle-public"
+                checked
+                onclick="markDirty()"
+              />
+              <div class="toggle-track"><div class="toggle-thumb"></div></div>
+            </label>
+          </div>
+        </div>
+
+        <!-- DANGER ZONE -->
+        <div class="settings-section danger">
+          <div class="settings-section-header">// DANGER ZONE</div>
+          <div class="settings-row">
+            <label class="settings-row-left">
+              <span class="settings-row-label">Reset Progress</span>
+              <span class="settings-row-desc"
+                >Wipe all lesson completions. Cannot be undone.</span
+              >
+            </label>
+            <button class="danger-btn" onclick="confirmReset()">
+              Reset Progress
+            </button>
+          </div>
+          <div class="settings-row">
+            <label class="settings-row-left">
+              <span class="settings-row-label">Delete Account</span>
+              <span class="settings-row-desc"
+                >Permanently remove your account and all data.</span
+              >
+            </label>
+            <button class="danger-btn" onclick="confirmDelete()">
+              Delete Account
+            </button>
+          </div>
+        </div>
+
+        <div class="settings-save-bar">
+          <button class="btn btn-ghost" onclick="location.href = 'map.html'">
+            Cancel
+          </button>
+          <button class="btn-save" onclick="saveSettings()">
+            Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <div class="save-toast" id="toast">✓ Settings saved</div>
+
+    <script>
+      //username
+      const savedName = localStorage.getItem("cx_username");
+      if (savedName) {
+        var show = (document.getElementById("input-username").value =
+          savedName);
+      }
+      //BIo
+      const savedBio = localStorage.getItem("cx_Bio");
+      if (savedBio) {
+        var show = (document.getElementById("input-bio").innerText = savedBio);
+      }
+      var dirty = false;
+      function markDirty() {
+        dirty = true;
+      }
+      function saveSettings() {
+        // saving username
+        var username = document.getElementById("input-username").value;
+        if (username.trim()) {
+          localStorage.setItem("cx_username", username.trim());
+        }
+        //saving Bio
+        var Bio = document.getElementById("input-bio").value;
+        if (Bio.trim()) {
+          localStorage.setItem("cx_Bio", Bio.trim());
+
+          var toast = document.getElementById("toast");
+          toast.classList.add("show");
+          dirty = false;
+          setTimeout(() => toast.classList.remove("show"), 2400);
+        }
+
+        function confirmReset() {
+          if (confirm("Reset all progress? This cannot be undone.")) {
+            alert("Progress reset.");
+          }
+        }
+      }
+
+      function confirmDelete() {
+        if (
+          confirm("Delete your account permanently? This cannot be undone.")
+        ) {
+          location.href = "login.html";
+        }
+      }
+      //changes the icon in setting.html ,from localstorage
+      var saved = localStorage.getItem("cx_avatar");
+      if (saved) {
+        var el = document.getElementById("nav-avatar-img");
+        el.innerHTML = '<img src="' + saved + '" alt="avatar">';
+      }
+    </script>
+  </body>
+</html>

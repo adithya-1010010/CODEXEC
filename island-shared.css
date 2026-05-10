@@ -1,0 +1,74 @@
+/* Island page shared styles */
+.island-hero {
+  padding: 4rem 0 3rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 3rem;
+}
+
+
+.island-hero-inner {
+  max-width: 1000px; margin: 0 auto; padding: 0 2rem;
+}
+.island-eyebrow { font-size: 0.65rem; letter-spacing: 0.15em; color: var(--ink-muted); margin-bottom: 0.75rem; }
+.island-hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(3rem, 8vw, 5.5rem);
+  line-height: 0.95; letter-spacing: 0.02em;
+  margin-bottom: 0.75rem;
+}
+.island-hero-sub { font-size: 0.78rem; color: var(--ink-muted); max-width: 480px; line-height: 1.8; margin-bottom: 1.5rem; }
+
+.island-hero-stats {
+  display: flex; gap: 2rem; margin-top: 1.5rem;
+  padding-top: 1.5rem; border-top: 1px solid var(--border);
+}
+.island-stat-item {}
+.island-stat-num { font-family: var(--font-display); font-size: 2rem; line-height: 1; margin-bottom: 0.2rem; }
+.island-stat-label { font-size: 0.62rem; letter-spacing: 0.12em; color: var(--ink-muted); }
+
+/* CLASSES SECTION */
+.island-content { max-width: 1000px; margin: 0 auto; padding: 0 2rem 4rem; }
+.island-section-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+.island-section-title {
+  font-family: var(--font-display); font-size: 1.6rem;
+  letter-spacing: 0.04em; color: var(--ink);
+}
+
+/* CLASSES GRID */
+.classes-grid {
+  display: grid; gap: 1px;
+  background: var(--border);
+  border: 1px solid var(--border);
+}
+.class-card {
+  background: var(--bg);
+  padding: 1.4rem 1.5rem;
+  display: flex; align-items: center; gap: 1.25rem;
+  cursor: pointer; transition: background .15s;
+  text-decoration: none; color: inherit;
+  position: relative;
+}
+.class-card:hover { background: var(--bg-card); }
+.class-card.done { opacity: 0.6; }
+.class-card.done:hover { opacity: 0.8; }
+.class-card.current { background: var(--bg-card); }
+.class-card.current::after {
+  content: 'CURRENT';
+  position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%);
+  font-size: 0.58rem; letter-spacing: 0.15em;
+  color: var(--accent); border: 1px solid var(--accent-dim); padding: 2px 6px;
+}
+
+.class-num {
+  font-family: var(--font-display); font-size: 1.8rem;
+  color: var(--ink-muted); min-width: 48px; line-height: 1;
+}
+.class-info { flex: 1; }
+.class-title { font-size: 0.9rem; font-weight: 600; margin-bottom: 0.2rem; letter-spacing: 0.04em; }
+.class-desc { font-size: 0.68rem; color: var(--ink-muted); line-height: 1.6; }
+.class-meta { display: flex; align-items: center; gap: 0.5rem; flex-shrink: 0; }
+.class-time { font-size: 0.62rem; color: var(--ink-muted); letter-spacing: 0.08em; }
+.class-status { font-size: 1rem; }

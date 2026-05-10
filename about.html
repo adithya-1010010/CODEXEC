@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Share+Tech+Mono&family=Barlow+Condensed:wght@400;600;700&display=swap');
+        *{margin:0;padding:0;box-sizing:border-box;}
+
+        body{
+        background:#1a1a1a;
+        color:#e8e4d8;
+        font-family:'Share Tech Mono',monospace;
+        min-height:100vh;
+        position:relative;
+        overflow-x:hidden;
+        }
+
+        .grid-bg{
+        position:fixed;inset:0;
+        background-image:
+            linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+        background-size:40px 40px;
+        pointer-events:none;z-index:0;
+        }
+
+        .page{position:relative;z-index:1;max-width:960px;margin:0 auto;padding:0 2rem 4rem;}
+
+        
+
+        .logo{font-family:'Bebas Neue',sans-serif;font-size:1.4rem;letter-spacing:0.08em;color:#e8e4d8;}
+        
+
+        /* HERO */
+        .hero{
+        padding:4rem 0 3rem;
+        border-bottom:1px solid rgba(255,255,255,0.08);
+        }
+        .hero-eyebrow{
+        font-size:0.72rem;letter-spacing:0.15em;color:rgba(232,228,216,0.4);
+        margin-bottom:1rem;
+        }
+        .hero-title{
+        font-family:'Bebas Neue',sans-serif;
+        font-size:clamp(4rem,10vw,7rem);
+        line-height:0.92;letter-spacing:0.02em;
+        color:#e8e4d8;margin-bottom:0.2rem;
+        }
+        .hero-title .red{
+        -webkit-text-stroke:2px #e84a1a;
+        color:transparent;
+        }
+        .hero-sub{
+        font-size:0.8rem;color:rgba(232,228,216,0.4);
+        max-width:500px;line-height:1.7;margin-top:1.2rem;
+        }
+
+        /* CODE BLOCK */
+        .code-section{padding:3rem 0;border-bottom:1px solid rgba(255,255,255,0.08);}
+        .section-label{font-size:0.68rem;letter-spacing:0.15em;color:rgba(232,228,216,0.35);margin-bottom:1.5rem;}
+        .code-wrap{
+        background:#111;
+        border:1px solid rgba(255,255,255,0.1);
+        border-top:2px solid #e84a1a;
+        padding:1.5rem 1.75rem;
+        max-width:580px;
+        }
+        .code-dots{display:flex;gap:6px;margin-bottom:1.2rem;}
+        .dot{width:9px;height:9px;border-radius:50%;}
+        .d1{background:#ff5f57;}.d2{background:#febc2e;}.d3{background:#28c840;}
+        .cl{font-family:'Share Tech Mono',monospace;font-size:0.78rem;line-height:1.9;color:rgba(232,228,216,0.55);}
+        .kw{color:#e84a1a;}.fn{color:#f5c842;}.str{color:#6ee7b7;}.cm{color:rgba(232,228,216,0.22);}.num{color:#a78bfa;}
+
+        /* MISSION CARDS */
+        .mission-section{padding:3rem 0;border-bottom:1px solid rgba(255,255,255,0.08);}
+        .mission-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:rgba(255,255,255,0.08);margin-top:1.5rem;}
+        .m-card{background:#1a1a1a;padding:1.5rem 1.25rem;}
+        .m-icon{font-size:0.8rem;color:#e84a1a;letter-spacing:0.08em;margin-bottom:0.75rem;font-family:'Share Tech Mono',monospace;}
+        .m-title{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:0.05em;color:#e8e4d8;margin-bottom:0.5rem;}
+        .m-desc{font-size:0.72rem;color:rgba(232,228,216,0.38);line-height:1.7;}
+
+        /* TEAM */
+        .team-section{padding:3rem 0;}
+        .team-header{display:flex;align-items:baseline;gap:1rem;margin-bottom:2rem;}
+        .team-big{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,7vw,5rem);letter-spacing:0.02em;color:#e8e4d8;line-height:1;}
+        .team-big .red{-webkit-text-stroke:2px #e84a1a;color:transparent;}
+        .team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+
+        .t-card{
+        border:1px solid rgba(255,255,255,0.1);
+        overflow:hidden;
+        position:relative;
+        transition:border-color 0.2s;
+        }
+        .t-card:hover{border-color:#e84a1a;}
+
+        .t-photo{
+        width:100%;padding-top:110%;
+        position:relative;overflow:hidden;
+        background:#111;
+        }
+        .t-photo img{
+        position:absolute;inset:0;width:100%;height:100%;
+        object-fit:cover;object-position:center top;
+        filter:grayscale(100%) contrast(1.1);
+        transition:filter 0.3s;
+        }
+        .t-card:hover .t-photo img{filter:grayscale(60%) contrast(1.1) sepia(20%);}
+
+        .t-photo-shade{
+        position:absolute;bottom:0;left:0;right:0;height:50%;
+        background:linear-gradient(to top,#1a1a1a,transparent);
+        }
+
+        .t-info{padding:1rem 1rem 1.25rem;border-top:1px solid rgba(255,255,255,0.08);}
+        .t-num{font-size:0.62rem;color:#e84a1a;letter-spacing:0.12em;margin-bottom:0.3rem;}
+        .t-name{font-family:'Bebas Neue',sans-serif;font-size:1.3rem;letter-spacing:0.05em;color:#e8e4d8;margin-bottom:0.3rem;}
+        .t-role{font-size:0.65rem;color:rgba(232,228,216,0.38);letter-spacing:0.08em;margin-bottom:0.75rem;}
+        .t-tags{display:flex;flex-wrap:wrap;gap:0.35rem;}
+        .t-tag{
+        font-size:0.6rem;letter-spacing:0.06em;
+        border:1px solid rgba(232,72,26,0.3);
+        color:rgba(232,72,26,0.7);
+        padding:0.18rem 0.5rem;
+        }
+
+        /* STATS */
+        .stats-row{
+        display:grid;grid-template-columns:repeat(3,1fr);
+        gap:1px;background:rgba(255,255,255,0.08);
+        margin-top:3rem;
+        }
+        .s-item{background:#1a1a1a;padding:2rem 1.5rem;text-align:center;}
+        .s-num{font-family:'Bebas Neue',sans-serif;font-size:3rem;color:#e84a1a;line-height:1;margin-bottom:0.3rem;}
+        .s-label{font-size:0.65rem;letter-spacing:0.12em;color:rgba(232,228,216,0.35);}
+
+        /* FOOTER */
+        footer{
+        border-top:1px solid rgba(255,255,255,0.08);
+        padding:1.75rem 0 0;
+        display:flex;align-items:center;justify-content:space-between;
+        margin-top:3rem;
+        }
+        .f-logo{font-family:'Bebas Neue',sans-serif;font-size:1.2rem;color:#e8e4d8;letter-spacing:0.08em;}
+        .f-note{font-size:0.62rem;color:rgba(232,228,216,0.25);letter-spacing:0.08em;}
+    </style>
+</head>
+<body>
+        <div class="grid-bg"></div>
+        <div class="page">
+
+        <!-- HERO -->
+        <div class="hero">
+            <div class="hero-title">BUILT BY<br><span class="red">CODERS,</span><br>FOR CODERS</div>
+            <div class="hero-sub">CODEXEC is a gamified coding education platform designed to make learning programming feel like an adventure — not a chore. Chart your course through the Codeverse Ocean, one island at a time.</div>
+        </div>
+
+        <!-- CODE BITE -->
+        <div class="code-section">
+            <div class="section-label">// OUR_PHILOSOPHY.JS</div>
+            <div class="code-wrap">
+            <div class="code-dots"><div class="dot d1"></div><div class="dot d2"></div><div class="dot d3"></div></div>
+            <div class="cl"><span class="kw">const</span> <span class="fn">codexec</span> = {</div>
+            <div class="cl">&nbsp;&nbsp;mission: <span class="str">"make coding feel like an adventure"</span>,</div>
+            <div class="cl">&nbsp;&nbsp;approach: <span class="str">"learn by doing, not watching"</span>,</div>
+            <div class="cl">&nbsp;&nbsp;levels: <span class="num">∞</span>,&nbsp;<span class="cm">// the ocean never ends</span></div>
+            <div class="cl">&nbsp;&nbsp;<span class="fn">start</span>: () <span class="kw">=></span> {</div>
+            <div class="cl">&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// pick a language. complete tasks.</span></div>
+            <div class="cl">&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// unlock new islands. become the dev</span></div>
+            <div class="cl">&nbsp;&nbsp;&nbsp;&nbsp;<span class="cm">// you were always meant to be.</span></div>
+            <div class="cl">&nbsp;&nbsp;&nbsp;&nbsp;<span class="kw">return</span> <span class="str">"your adventure"</span>;</div>
+            <div class="cl">&nbsp;&nbsp;}</div>
+            <div class="cl">};</div>
+            </div>
+        </div>
+
+        <!-- WHAT WE DO -->
+        <div class="mission-section">
+            <div class="section-label">// WHAT_WE_DO</div>
+            <div class="mission-grid">
+            <div class="m-card">
+                <div class="m-icon">[ TASK_BASED ]</div>
+                <div class="m-title">LEARN BY DOING</div>
+                <div class="m-desc">Every concept is a mission. Complete real coding tasks across HTML, CSS, JavaScript and beyond.</div>
+            </div>
+            <div class="m-card">
+                <div class="m-icon">[ GAMIFIED ]</div>
+                <div class="m-title">EARN YOUR RANK</div>
+                <div class="m-desc">XP, levels, and leaderboards. Progress isn't just measured — it's celebrated.</div>
+            </div>
+            <div class="m-card">
+                <div class="m-icon">[ EXPLORE ]</div>
+                <div class="m-title">CHART THE MAP</div>
+                <div class="m-desc">Navigate through language islands. Each island is a new skill. Each task, a new discovery.</div>
+            </div>
+            </div>
+        </div>
+
+        <!-- TEAM -->
+        <div class="team-section">
+            <div class="section-label">// THE_CREW</div>
+            <div class="team-header">
+            <div class="team-big">MEET THE<br><span class="red">BUILDERS</span></div>
+            </div>
+            <div class="team-grid">
+
+            <div class="t-card">
+                <div class="t-photo">
+                <img id="img1" src="photos/adithya.png" alt="Adithya R"/>
+                <div class="t-photo-shade"></div>
+                </div>
+                <div class="t-info">
+                <div class="t-num">// CREW_01</div>
+                <div class="t-name">ADITHYA R</div>
+                <div class="t-role">CO-FOUNDER & DEVELOPER</div>
+                <div class="t-tags">
+                    <span class="t-tag">FRONTEND</span>
+                    <span class="t-tag">UI/UX</span>
+                </div>
+                </div>
+            </div>
+
+            <div class="t-card">
+                <div class="t-photo">
+                <img id="img2" src="photos/anu.png" alt="Ananuay Krishna Menon"/>
+                <div class="t-photo-shade"></div>
+                </div>
+                <div class="t-info">
+                <div class="t-num">// CREW_02</div>
+                <div class="t-name">ANANUAY KRISHNA MENON</div>
+                <div class="t-role">CO-FOUNDER & BACKEND</div>
+                <div class="t-tags">
+                    <span class="t-tag">BACKEND</span>
+                    <span class="t-tag">SYSTEMS</span>
+                </div>
+                </div>
+            </div>
+
+            <div class="t-card">
+                <div class="t-photo">
+                <img id="img3" src="photos/jeevan.png" alt="Jeevan Manoj"/>
+                <div class="t-photo-shade"></div>
+                </div>
+                <div class="t-info">
+                <div class="t-num">// CREW_03</div>
+                <div class="t-name">JEEVAN MANOJ</div>
+                <div class="t-role">CO-FOUNDER & DESIGN</div>
+                <div class="t-tags">
+                    <span class="t-tag">DESIGN</span>
+                    <span class="t-tag">CONTENT</span>
+                </div>
+                </div>
+            </div>
+
+            </div>
+
+            <!-- STATS -->
+            <div class="stats-row">
+            <div class="s-item">
+                <div class="s-num">3</div>
+                <div class="s-label">CREW MEMBERS</div>
+            </div>
+            <div class="s-item">
+                <div class="s-num">∞</div>
+                <div class="s-label">TASKS TO COMPLETE</div>
+            </div>
+            <div class="s-item">
+                <div class="s-num">1</div>
+                <div class="s-label">MISSION: TEACH THE WORLD</div>
+            </div>
+            </div>
+        </div>
+
+        <footer>
+            <div class="f-logo">CODEXEC</div>
+            <div class="f-note">// BUILT BY CODERS, FOR CODERS &nbsp;•&nbsp; CODEVERSE OCEAN ⚡</div>
+        </footer>
+        </div>
+
+
+    
+</body>
+</html>

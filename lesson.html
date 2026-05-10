@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CODEXEC — Lesson</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { overflow: hidden; height: 100vh; display: flex; flex-direction: column; }
+
+    /* TOPBAR */
+    .lesson-topbar {
+      height: 52px; flex-shrink: 0;
+      display: flex; align-items: center;
+      padding: 0 1.25rem; gap: 1rem;
+      background: var(--bg-dark);
+      border-bottom: 1px solid var(--border);
+      position: relative; z-index: 10;
+    }
+    .topbar-back {
+      display: flex; align-items: center; gap: 6px;
+      font-size: 0.68rem; letter-spacing: 0.08em;
+      color: var(--ink-muted); cursor: pointer;
+      background: none; border: 1px solid transparent;
+      padding: 4px 8px; transition: all .15s;
+    }
+    .topbar-back:hover { color: var(--ink); border-color: var(--border); }
+    .topbar-info { flex: 1; }
+    .topbar-breadcrumb { font-size: 0.62rem; color: var(--ink-muted); letter-spacing: 0.1em; }
+    .topbar-title { font-family: var(--font-display); font-size: 1.1rem; letter-spacing: 0.04em; line-height: 1; }
+    .topbar-progress {
+      display: flex; align-items: center; gap: 4px;
+    }
+    .progress-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: var(--border); border: 1px solid var(--border-med);
+    }
+    .progress-dot.done { background: var(--accent); border-color: var(--accent); }
+    .progress-dot.active { background: transparent; border: 1px solid var(--accent); }
+    .topbar-run {
+      display: flex; align-items: center; gap: 6px;
+      padding: 6px 16px;
+      font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em;
+      text-transform: uppercase; cursor: pointer;
+      background: var(--accent); color: #fff; border: 1px solid var(--accent);
+      transition: background .15s;
+    }
+    .topbar-run:hover { background: #d43a0e; }
+
+    /* EDITOR LAYOUT */
+    .editor-layout {
+      flex: 1; display: flex; overflow: hidden;
+      min-height: 0;
+    }
+
+    /* PANES */
+    .pane {
+      display: flex; flex-direction: column;
+      overflow: hidden; min-width: 0;
+    }
+    .pane-instructions { width: 28%; border-right: 1px solid var(--border); }
+    .pane-code { flex: 1; border-right: 1px solid var(--border); }
+    .pane-preview { width: 30%; }
+
+    .pane-header {
+      height: 40px; flex-shrink: 0;
+      display: flex; align-items: center; padding: 0 1rem; gap: 0.75rem;
+      background: var(--bg-dark); border-bottom: 1px solid var(--border);
+    }
+    .pane-title { font-size: 0.65rem; letter-spacing: 0.12em; color: var(--ink-muted); text-transform: uppercase; }
+    .pane-tabs { display: flex; margin-left: auto; }
+    .pane-tab {
+      padding: 4px 10px; font-family: var(--font-mono); font-size: 0.6rem;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      background: none; border: 1px solid transparent; color: var(--ink-muted);
+      cursor: pointer; transition: all .12s;
+    }
+    .pane-tab:hover { color: var(--ink); }
+    .pane-tab.active { color: var(--accent); border-color: var(--accent-dim); }
+
+    /* INSTRUCTIONS */
+    .instructions-body {
+      flex: 1; overflow-y: auto; padding: 1.25rem;
+      font-size: 0.75rem; line-height: 1.8;
+    }
+    .task-section { margin-bottom: 1.25rem; }
+    .task-label {
+      font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--accent); margin-bottom: 0.5rem;
+    }
+    .task-text { color: var(--ink-soft); line-height: 1.8; }
+    .task-text strong { color: var(--ink); }
+    .task-text code {
+      background: var(--bg-dark); color: var(--accent);
+      padding: 1px 5px; font-size: 0.7rem;
+      border: 1px solid var(--border);
+    }
+
+    .task-checklist { list-style: none; }
+    .task-checklist li {
+      display: flex; align-items: flex-start; gap: 0.6rem;
+      padding: 0.4rem 0; color: var(--ink-soft);
+      border-bottom: 1px solid var(--border); font-size: 0.72rem;
+    }
+    .task-checklist li:last-child { border-bottom: none; }
+    .check-box {
+      width: 14px; height: 14px; flex-shrink: 0;
+      border: 1px solid var(--border-med);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; font-size: 0.6rem; margin-top: 2px;
+      transition: all .15s;
+    }
+    .check-box.checked { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .task-checklist code { background: var(--bg-dark); color: var(--accent); padding: 1px 4px; font-size: 0.65rem; border: 1px solid var(--border); }
+
+    .hint-box {
+      background: var(--bg-dark); border: 1px solid var(--border);
+      border-left: 2px solid var(--accent); padding: 0.85rem 1rem; margin-top: 1rem;
+    }
+    .hint-label { font-size: 0.6rem; letter-spacing: 0.12em; color: var(--accent); margin-bottom: 0.4rem; }
+    .hint-text { font-size: 0.7rem; color: var(--ink-muted); line-height: 1.7; }
+    .hint-text code { color: var(--accent); background: var(--bg); padding: 1px 4px; border: 1px solid var(--border); }
+
+    /* CODE EDITOR */
+    .code-editor-wrap {
+      flex: 1; display: flex; overflow: hidden;
+      background: var(--bg-void); font-size: 13px;
+    }
+    .line-numbers {
+      padding: 1rem 0.75rem 1rem 0.5rem;
+      background: var(--bg-dark); border-right: 1px solid var(--border);
+      display: flex; flex-direction: column; gap: 0;
+      user-select: none; flex-shrink: 0; min-width: 40px;
+    }
+    .line-num {
+      font-family: var(--font-mono); font-size: 12px;
+      color: var(--ink-muted); line-height: 1.6;
+      text-align: right; display: block;
+    }
+    .code-editor {
+      flex: 1; background: transparent; border: none; outline: none;
+      color: var(--ink); font-family: var(--font-mono); font-size: 13px;
+      line-height: 1.6; padding: 1rem; resize: none;
+      white-space: pre; overflow: auto; caret-color: var(--accent);
+    }
+    .status-bar {
+      height: 26px; flex-shrink: 0;
+      display: flex; align-items: center; gap: 1rem; padding: 0 1rem;
+      background: var(--bg-dark); border-top: 1px solid var(--border);
+      font-size: 0.6rem; letter-spacing: 0.08em; color: var(--ink-muted);
+    }
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: #28c840; }
+
+    /* PREVIEW */
+    .preview-frame-wrap {
+      flex: 1; position: relative; overflow: hidden;
+      background: #fff;
+    }
+    .preview-frame { width: 100%; height: 100%; border: none; }
+    .preview-overlay {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      background: var(--bg-void); gap: 0.5rem;
+      transition: opacity .3s;
+    }
+    .preview-overlay span { font-size: 2rem; opacity: 0.3; }
+    .preview-overlay p { font-size: 0.7rem; color: var(--ink-muted); letter-spacing: 0.1em; }
+
+    /* SUCCESS OVERLAY */
+    .success-overlay {
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(0,0,0,0.85);
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none; transition: opacity .3s;
+    }
+    .success-overlay.show { opacity: 1; pointer-events: all; }
+    .success-card {
+      background: var(--bg-card); border: 1px solid var(--border);
+      border-top: 2px solid var(--accent);
+      padding: 2.5rem 3rem; text-align: center; max-width: 380px; width: 90%;
+    }
+    .success-emoji { font-size: 2.5rem; margin-bottom: 1rem; }
+    .success-title {
+      font-family: var(--font-display); font-size: 2.2rem;
+      letter-spacing: 0.04em; margin-bottom: 0.5rem;
+    }
+    .success-sub { font-size: 0.72rem; color: var(--ink-muted); margin-bottom: 1.5rem; line-height: 1.6; }
+    .success-actions { display: flex; gap: 0.75rem; justify-content: center; margin-top: 1.5rem; }
+
+    /* RESIZER */
+    .resizer {
+      width: 4px; background: var(--border); cursor: col-resize;
+      transition: background .15s; flex-shrink: 0;
+    }
+    .resizer:hover { background: var(--accent-dim); }
+  </style>
+</head>
+<body>
+<div class="grid-bg" style="opacity: 0.3;"></div>
+
+<!-- TOPBAR -->
+<div class="lesson-topbar">
+  <button class="topbar-back" onclick="goBack()">← BACK</button>
+  <div style="width: 1px; height: 20px; background: var(--border);"></div>
+  <div class="topbar-info">
+    <div class="topbar-breadcrumb">HTML ISLAND · CLASS 05</div>
+    <div class="topbar-title">Forms Basics</div>
+  </div>
+  <div class="topbar-progress" id="progress-dots"></div>
+  <button class="topbar-run" >▶ RUN</button>
+  <button class="btn btn-ghost" style="font-size:0.68rem; padding:6px 14px;">Submit ✓</button>
+</div>
+
+<!-- EDITOR LAYOUT -->
+<div class="editor-layout">
+
+  <!-- INSTRUCTIONS PANE -->
+  <div class="pane pane-instructions">
+    <div class="pane-header">
+      <span class="pane-title">Instructions</span>
+      <div class="pane-tabs">
+        <button class="pane-tab active" >Task</button>
+        <button class="pane-tab" >Theory</button>
+      </div>
+    </div>
+    <div class="instructions-body" id="instructions-body">
+      <!-- Task tab -->
+      <div id="tab-task">
+        <div class="task-section">
+          <div class="task-label">// Objective</div>
+          <div class="task-text">
+            Build a <strong>contact form</strong> using semantic HTML. Your form needs to collect a user's <strong>name</strong>, <strong>email address</strong>, and a <strong>message</strong>.
+          </div>
+        </div>
+        <div class="task-section">
+          <div class="task-label">// Requirements</div>
+          <ul class="task-checklist" id="checklist">
+            <li><div class="check-box" ></div>Wrap everything in a <code>&lt;form&gt;</code> element</li>
+            <li><div class="check-box" ></div>Add a <code>&lt;label&gt;</code> for each field</li>
+            <li><div class="check-box" ></div>Include an <code>&lt;input type="text"&gt;</code> for name</li>
+            <li><div class="check-box" ></div>Include an <code>&lt;input type="email"&gt;</code> for email</li>
+            <li><div class="check-box" ></div>Add a <code>&lt;textarea&gt;</code> for the message</li>
+            <li><div class="check-box" ></div>Include a <code>&lt;button type="submit"&gt;</code></li>
+          </ul>
+        </div>
+        <div class="task-section">
+          <div class="task-label">// Concepts</div>
+          <div class="task-text">
+            Forms collect user data. Each <code>&lt;input&gt;</code> should have a <strong>name</strong> attribute. Labels improve accessibility by linking to inputs via the <strong>for/id</strong> pair.
+          </div>
+        </div>
+        <div class="hint-box">
+          <div class="hint-label">// Hint</div>
+          <div class="hint-text">
+            Link a label to an input by matching <code>for="myId"</code> on the label with <code>id="myId"</code> on the input. Clicking the label will focus the input.
+          </div>
+        </div>
+      </div>
+
+      <!-- Theory tab -->
+      <div id="tab-theory" style="display:none;">
+        <div class="task-section">
+          <div class="task-label">// HTML Forms</div>
+          <div class="task-text">
+            The <code>&lt;form&gt;</code> element is a container for input controls. It has two key attributes: <strong>action</strong> (where to send data) and <strong>method</strong> (GET or POST).
+          </div>
+        </div>
+        <div class="task-section">
+          <div class="task-label">// Input Types</div>
+          <div class="task-text">
+            HTML5 introduced many input types: <code>text</code>, <code>email</code>, <code>password</code>, <code>number</code>, <code>date</code>, <code>checkbox</code>, <code>radio</code>, and more. Each type provides built-in validation.
+          </div>
+        </div>
+        <div class="task-section">
+          <div class="task-label">// Labels & Accessibility</div>
+          <div class="task-text">
+            Always pair inputs with <code>&lt;label&gt;</code> elements. Use <code>for="id"</code> to associate them. This improves accessibility and usability — clicking the label focuses the input.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="resizer" id="resizer1"></div>
+
+  <!-- CODE EDITOR PANE -->
+  <div class="pane pane-code">
+    <div class="pane-header">
+      <span class="pane-title">Code Editor</span>
+      <div style="margin-left:auto; display:flex; gap:8px; align-items:center;">
+        <span style="font-size:0.6rem; background:var(--accent-faint); color:var(--accent); padding:2px 7px; border:1px solid var(--accent-dim); letter-spacing:0.08em;">HTML</span>
+        <button style="background:none;border:none;color:var(--ink-muted);font-size:0.62rem;cursor:pointer;font-family:var(--font-mono);letter-spacing:0.08em;">⟳ RESET</button>
+      </div>
+    </div>
+    <div class="code-editor-wrap">
+      <div class="line-numbers" id="line-nums"></div>
+      <textarea class="code-editor" id="code-editor" spellcheck="false"
+        ></textarea>
+    </div>
+    <div class="status-bar">
+      <div class="status-dot"></div>
+      <span>HTML</span>
+      <span id="cursor-pos">Ln 1, Col 1</span>
+      <span style="margin-left:auto">UTF-8</span>
+      <span>Spaces: 2</span>
+    </div>
+  </div>
+
+  <div class="resizer" id="resizer2"></div>
+
+  <!-- PREVIEW PANE -->
+  <div class="pane pane-preview">
+    <div class="pane-header">
+      <span class="pane-title">Preview</span>
+      <div class="pane-tabs">
+        <button class="pane-tab active" >Preview</button>
+        <button class="pane-tab" ">Console</button>
+      </div>
+    </div>
+    <div class="preview-frame-wrap" id="preview-wrap">
+      <iframe class="preview-frame" id="preview-frame"></iframe>
+      <div class="preview-overlay" id="preview-overlay">
+        <span>▶</span>
+        <p>CLICK RUN TO PREVIEW</p>
+      </div>
+    </div>
+    <div id="console-wrap" style="display:none; flex:1; background:var(--bg-void); overflow:auto;">
+      <div id="console-out" style="padding:1rem; font-family:var(--font-mono); font-size:12px; color:var(--ink-muted); line-height:1.8;">
+        Console output will appear here…
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function goBack(){
+    window.history.back();
+
+  }
+</script>
+</body>
+</html>

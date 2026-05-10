@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CODEXEC — World Map</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="map.css">
+</head>
+<body>
+  <div class="grid-bg"></div>
+
+
+  <!-- whole navbar -->
+  <nav class="nav">
+
+    <!-- the logo  -->
+    <a class="nav-logo" href="map.html">CODEXEC</a>
+
+    <div class="nav-links">
+      <button class="nav-link active" onclick="window.location.href='map.html'">Map</button>
+      <button class="nav-link" onclick="window.location.href='profile.html'">Profile</button>
+    </div>
+
+    <div class="nav-search-wrap">
+      <div class="nav-search">
+        <span class="nav-search-icon">⌕</span>
+        <input type="text" id="nav-search-input" placeholder="Search..." autocomplete="off"
+          oninput="navSearch(this.value)" onblur="setTimeout(()=>closeSearch(),150)">
+      </div>
+
+      
+      <div class="search-results" id="search-results"></div>
+    </div>
+    <div class="nav-right">
+      <a class="nav-about" href="about.html">About</a>
+      <div class="nav-avatar" onclick="location.href='settings.html'" title="Settings" id="nav-avatar-img">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+      </div>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero-landing" id="hero-landing">
+    <div class="hero-content fade-up">
+      <h1 class="hero-title">The Voyage <br><span class="red">BEGINS</span></h1>
+      <p class="hero-sub">Step in. The voyage has already begun—now the journey is yours to define.</p>
+      <button class="hero-btn" id="heroGetStarted">
+        <span>EXPLORE THE MAP</span>
+        <span>⚡</span>
+      </button>
+      <div class="hero-scroll">▼ SCROLL TO EXPLORE</div>
+    </div>
+  </section>
+
+  <!-- MAP SECTION -->
+  <section id="map-section">
+    <div class="map-wrap">
+      <div class="map-header">
+        <div class="map-header-eyebrow">// THE_CODEVERSE_OCEAN</div>
+        <div class="map-header-title">CHOOSE YOUR ISLAND</div>
+      </div>
+
+      <div class="islands-grid">
+        <!-- HTML Island -->
+        <div class="island-card" style="--card-color: var(--html-primary)" onclick="location.href='html-island.html'">
+          <span class="island-icon">🏝️</span>
+          <div class="island-name" style="color: var(--html-primary)">HTML</div>
+          <div class="island-sub">Structure &amp; Semantics</div>
+          <div class="island-meta">
+            <div>
+              <div class="island-progress-label">PROGRESS</div>
+              <div class="island-progress-pct" style="color: var(--html-primary)">68%</div>
+            </div>
+            <span class="badge badge-html">12 / 18 Classes</span>
+          </div>
+        </div>
+
+        <!-- CSS Island -->
+        <div class="island-card" style="--card-color: var(--css-primary)" onclick="location.href='css-island.html'">
+          <span class="island-icon">💎</span>
+          <div class="island-name" style="color: var(--css-primary)">CSS</div>
+          <div class="island-sub">Style &amp; Layout</div>
+          <div class="island-meta">
+            <div>
+              <div class="island-progress-label">PROGRESS</div>
+              <div class="island-progress-pct" style="color: var(--css-primary)">24%</div>
+            </div>
+            <span class="badge badge-css">3 / 16 Classes</span>
+          </div>
+        </div>
+
+        <!-- JS Island (locked) -->
+        <div class="island-card locked" style="--card-color: var(--js-primary)">
+          <span class="island-icon">⚡</span>
+          <div class="island-name" style="color: var(--js-primary)">JAVASCRIPT</div>
+          <div class="island-sub">Logic &amp; Interactivity</div>
+          <div class="island-meta">
+            <div>
+              <div class="island-progress-label">STATUS</div>
+              <div class="island-progress-pct" style="color: var(--ink-muted)">—</div>
+            </div>
+            <span class="island-locked-label">🔒 LOCKED</span>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <div class="f-logo">CODEXEC</div>
+        <div class="f-note">// CODEVERSE OCEAN ⚡ BUILT BY CODERS, FOR CODERS</div>
+      </footer>
+    </div>
+  </section>
+
+  <script>
+    document.getElementById('heroGetStarted').addEventListener('click', function() {
+      document.getElementById('map-section').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    // Load saved avatar
+    const saved = localStorage.getItem('cx_avatar');
+    if (saved) {
+      const el = document.getElementById('nav-avatar-img');
+      el.innerHTML = `<img src="${saved}" alt="avatar">`;
+    }
+
+
+  // the search bar function
+  const NAV_PAGES = [
+    { label:"World Map", tag:"PAGE", href:"map.html" },
+    { label:"HTML Island", tag:"ISLAND", href:"html-island.html" },
+    { label:"CSS Island", tag:"ISLAND", href:"css-island.html" },
+    { label:"JS Island", tag:"ISLAND", href:"js-island.html" },
+    { label:"Current Lesson", tag:"PAGE", href:"lesson.html" },
+    { label:"Profile", tag:"PAGE", href:"profile.html" },
+    { label:"Settings", tag:"PAGE", href:"settings.html" },
+    { label:"About Us", tag:"PAGE", href:"about.html" },
+  ];
+function navSearch(q) {
+  const box = document.getElementById("search-results");
+  if(!q.trim()){ 
+    box.classList.remove("open"); 
+    return; 
+  }
+
+  const matches = NAV_PAGES.filter(p => 
+  p.label.toLowerCase().includes(q.toLowerCase())
+);
+
+if (matches.length) {
+  box.innerHTML = matches.map(p => 
+    `<div class="search-result-item" onclick="location.href='${p.href}'">
+      <span class="search-result-label">${p.label}</span>
+      <span class="search-result-tag">${p.tag}</span>
+    </div>`
+  ).join("");
+  }
+  else {
+  box.innerHTML = '<div class="search-empty">No results found</div>';
+
+}
+
+box.classList.add("open");
+}
+
+
+function closeSearch() {
+  document.getElementById("search-results").classList.remove("open");
+}
+
+</script>
+</body>
+</html>

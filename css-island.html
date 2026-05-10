@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CODEXEC — CSS Island</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="island-shared.css">
+  <style>
+    .island-hero { background: linear-gradient(160deg, #001230 0%, #001A4A 50%, var(--bg) 100%); }
+    .island-hero-title { color: var(--css-primary); }
+    .island-stat-num { color: var(--css-primary); }
+    .continue-btn { background: var(--css-primary); color: #fff; border-color: var(--css-primary); }
+    .continue-btn:hover { background: #3a8de0; }
+  </style>
+</head>
+<body>
+<div class="grid-bg"></div>
+
+<nav class="nav">
+  <a class="nav-logo" href="map.html">CODEXEC</a>
+  <div class="nav-links">
+    <button class="nav-link" onclick="location.href='map.html'">Map</button>
+    <button class="nav-link active">CSS Island</button>
+    <button class="nav-link" onclick="location.href='profile.html'">Profile</button>
+  </div>
+  <div class="nav-right">
+    <a class="nav-about" href="about.html">About</a>
+    <div class="nav-avatar" onclick="location.href='settings.html'" title="Settings" id="nav-avatar-img">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+    </div>
+  </div>
+</nav>
+
+<div class="island-hero">
+  <div class="island-hero-inner">
+    <div class="island-eyebrow">// CSS_ISLAND · STYLE &amp; LAYOUT</div>
+    <h1 class="island-hero-title">CSS<br>ISLAND 💎</h1>
+    <p class="island-hero-sub">Style the web. Master selectors, box model, flexbox, grid, and animations. Make every pixel intentional.</p>
+    <div class="island-hero-stats">
+      <div class="island-stat-item">
+        <div class="island-stat-num">3</div>
+        <div class="island-stat-label">CLASSES DONE</div>
+      </div>
+      <div class="island-stat-item">
+        <div class="island-stat-num">16</div>
+        <div class="island-stat-label">TOTAL CLASSES</div>
+      </div>
+      <div class="island-stat-item">
+        <div class="island-stat-num">24%</div>
+        <div class="island-stat-label">COMPLETE</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="island-content">
+  <div class="island-section-header">
+    <div class="island-section-title">// CLASSES</div>
+    <button class="btn continue-btn" onclick="location.href='lesson.html'">▶ Continue</button>
+  </div>
+
+  <div class="classes-grid" id="classes-grid"></div>
+
+  <footer style="margin-top: 3rem;">
+    <div class="f-logo">CODEXEC</div>
+    <div class="f-note">// CSS ISLAND ⚡ STYLE &amp; LAYOUT</div>
+  </footer>
+</div>
+
+<script>
+const classes = [
+  { num:"01", title:"CSS Intro", desc:"Selectors, properties, and the cascade.", time:"10 min", done:true },
+  { num:"02", title:"The Box Model", desc:"margin, padding, border, width, height.", time:"12 min", done:true },
+  { num:"03", title:"Colors & Typography", desc:"Color formats, font-family, font-size.", time:"12 min", done:true },
+  { num:"04", title:"Display & Positioning", desc:"block, inline, absolute, relative, fixed.", time:"16 min", done:false, current:false },
+  { num:"05", title:"Flexbox", desc:"Container and item properties for 1D layout.", time:"20 min", done:false },
+  { num:"06", title:"CSS Grid", desc:"2D layout with rows and columns.", time:"22 min", done:false },
+  { num:"07", title:"Pseudo-classes & Elements", desc:":hover, :focus, ::before, ::after.", time:"14 min", done:false },
+  { num:"08", title:"Transitions", desc:"Smooth property changes with CSS transitions.", time:"14 min", done:false },
+  { num:"09", title:"Animations", desc:"@keyframes and animation properties.", time:"18 min", done:false },
+  { num:"10", title:"Responsive Design", desc:"Media queries and mobile-first CSS.", time:"20 min", done:false },
+  { num:"11", title:"CSS Variables", desc:"Custom properties and dynamic theming.", time:"12 min", done:false },
+  { num:"12", title:"Advanced Selectors", desc:"Combinators, attribute selectors, :nth-child.", time:"14 min", done:false },
+  { num:"13", title:"CSS Filters & Effects", desc:"filter, backdrop-filter, clip-path.", time:"14 min", done:false },
+  { num:"14", title:"CSS Architecture", desc:"BEM, utility-first, organizing large stylesheets.", time:"16 min", done:false },
+  { num:"15", title:"Dark Mode", desc:"prefers-color-scheme and theming strategies.", time:"12 min", done:false },
+  { num:"16", title:"CSS Mastery Review", desc:"Capstone: build a fully styled layout.", time:"35 min", done:false },
+];
+
+const grid = document.getElementById('classes-grid');
+classes.forEach(c => {
+  const a = document.createElement('a');
+  a.href = c.done || c.current ? 'lesson.html' : '#';
+  a.className = 'class-card' + (c.done ? ' done' : '') + (c.current ? ' current' : '');
+  a.innerHTML = `
+    <div class="class-num">${c.num}</div>
+    <div class="class-info">
+      <div class="class-title">${c.title}</div>
+      <div class="class-desc">${c.desc}</div>
+    </div>
+    <div class="class-meta">
+      <span class="class-time">${c.time}</span>
+      <span class="class-status">${c.done ? '✓' : c.current ? '▶' : '○'}</span>
+    </div>
+  `;
+  grid.appendChild(a);
+});
+
+const saved = localStorage.getItem('cx_avatar');
+if (saved) {
+  const el = document.getElementById('nav-avatar-img');
+  el.innerHTML = `<img src="${saved}" alt="avatar">`;
+}
+
+
+
+</script>
+</body>
+</html>

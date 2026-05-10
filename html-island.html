@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CODEXEC — HTML Island</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="island-shared.css">
+  <style>
+    .island-hero { background: linear-gradient(160deg, #1A0800 0%, #2A1000 50%, var(--bg) 100%); }
+    .island-hero-title { color: var(--html-primary); }
+    .island-stat-num { color: var(--html-primary); }
+    .continue-btn { background: var(--html-primary); color: #fff; border-color: var(--html-primary); }
+    .continue-btn:hover { background: #e05520; }
+  </style>
+</head>
+<body>
+<div class="grid-bg"></div>
+
+<nav class="nav">
+  <a class="nav-logo" href="map.html">CODEXEC</a>
+  <div class="nav-links">
+    <button class="nav-link" onclick="location.href='map.html'">Map</button>
+    <button class="nav-link active">HTML Island</button>
+    <button class="nav-link" onclick="location.href='profile.html'">Profile</button>
+  </div>
+  <div class="nav-right">
+    <a class="nav-about" href="about.html">About</a>
+    <div class="nav-avatar" onclick="location.href='settings.html'" title="Settings" id="nav-avatar-img">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/></svg>
+    </div>
+  </div>
+</nav>
+
+<div class="island-hero">
+  <div class="island-hero-inner">
+    <div class="island-eyebrow">// HTML_ISLAND · STRUCTURE &amp; SEMANTICS</div>
+    <h1 class="island-hero-title">HTML<br>ISLAND 🏝️</h1>
+    <p class="island-hero-sub">Master the language of structure. Build your foundation from tags to semantic HTML5. Every great web page starts here.</p>
+    <div class="island-hero-stats">
+      <div class="island-stat-item">
+        <div class="island-stat-num">12</div>
+        <div class="island-stat-label">CLASSES DONE</div>
+      </div>
+      <div class="island-stat-item">
+        <div class="island-stat-num">18</div>
+        <div class="island-stat-label">TOTAL CLASSES</div>
+      </div>
+      <div class="island-stat-item">
+        <div class="island-stat-num">68%</div>
+        <div class="island-stat-label">COMPLETE</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="island-content">
+  <div class="island-section-header">
+    <div class="island-section-title">// CLASSES</div>
+    <button class="btn continue-btn" onclick="location.href='lesson.html'">▶ Continue</button>
+  </div>
+
+  <div class="classes-grid" id="classes-grid"></div>
+
+  <footer style="margin-top: 3rem;">
+    <div class="f-logo">CODEXEC</div>
+    <div class="f-note">// HTML ISLAND ⚡ STRUCTURE &amp; SEMANTICS</div>
+  </footer>
+</div>
+
+<script>
+const classes = [
+  { num:"01", title:"Intro to HTML", desc:"Tags, elements, and your first webpage.", time:"8 min", done:true },
+  { num:"02", title:"Headings & Text", desc:"h1–h6, paragraphs, bold, italic.", time:"10 min", done:true },
+  { num:"03", title:"Links & Images", desc:"Anchor tags, src attributes, alt text.", time:"12 min", done:true },
+  { num:"04", title:"Lists & Tables", desc:"ul, ol, li, table, tr, td elements.", time:"14 min", done:true },
+  { num:"05", title:"Forms Basics", desc:"Input types, labels, and submit buttons.", time:"16 min", done:true },
+  { num:"06", title:"Semantic HTML", desc:"header, nav, main, footer, section.", time:"18 min", done:true },
+  { num:"07", title:"Attributes Deep Dive", desc:"Global attributes, data attributes, ARIA.", time:"15 min", done:true },
+  { num:"08", title:"HTML Accessibility", desc:"Accessible markup patterns and screen readers.", time:"20 min", done:true },
+  { num:"09", title:"Meta & Head Tags", desc:"SEO basics, viewport, charset, og tags.", time:"12 min", done:true },
+  { num:"10", title:"Multimedia", desc:"Audio, video, picture, iframe elements.", time:"14 min", done:true },
+  { num:"11", title:"Advanced Forms", desc:"Validation, fieldset, datalist, textarea.", time:"20 min", done:true },
+  { num:"12", title:"HTML5 APIs Intro", desc:"Local storage, geolocation, canvas basics.", time:"18 min", done:true },
+  { num:"13", title:"Responsive Images", desc:"srcset, sizes, art direction.", time:"16 min", done:false, current:false },
+  { num:"14", title:"Web Components", desc:"Custom elements, shadow DOM basics.", time:"22 min", done:false },
+  { num:"15", title:"HTML Performance", desc:"Lazy loading, preload, prefetch hints.", time:"14 min", done:false },
+  { num:"16", title:"Microdata & Schema", desc:"Structured data for search engines.", time:"12 min", done:false },
+  { num:"17", title:"Security in HTML", desc:"CSP meta, rel=noopener, safe linking.", time:"10 min", done:false },
+  { num:"18", title:"HTML Mastery Review", desc:"Capstone: build a fully semantic page.", time:"30 min", done:false },
+];
+
+const grid = document.getElementById('classes-grid');
+classes.forEach(c => {
+  const a = document.createElement('a');
+  a.href = c.done || c.current ? 'lesson.html' : '#';
+  a.className = 'class-card' + (c.done ? ' done' : '') + (c.current ? ' current' : '');
+  a.innerHTML = `
+    <div class="class-num">${c.num}</div>
+    <div class="class-info">
+      <div class="class-title">${c.title}</div>
+      <div class="class-desc">${c.desc}</div>
+    </div>
+    <div class="class-meta">
+      <span class="class-time">${c.time}</span>
+      <span class="class-status">${c.done ? '✓' : c.current ? '▶' : '○'}</span>
+    </div>
+  `;
+  grid.appendChild(a);
+});
+
+// Load saved avatar
+const saved = localStorage.getItem('cx_avatar');
+if (saved) {
+  const el = document.getElementById('nav-avatar-img');
+  el.innerHTML = `<img src="${saved}" alt="avatar">`;
+}
+
+</script>
+</body>
+</html>

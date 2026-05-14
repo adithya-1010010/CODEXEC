@@ -101,3 +101,15 @@ function navSearch(q) {
   box.classList.add('open');
 }
 function closeSearch() { document.getElementById('search-results').classList.remove('open'); }
+
+// Load saved username
+      const savedName = localStorage.getItem("cx_username");
+      if (savedName)
+        document.getElementById("profile-name-display").textContent = savedName;
+
+//bio update in profile
+      const profilebio = localStorage.getItem("cx_Bio");
+      if (profilebio) {
+        var showBio = (document.getElementById("profileBio").innerText =
+          profilebio);
+      }

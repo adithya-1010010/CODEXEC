@@ -1,131 +1,170 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CODEXEC — Login</title>
-  <link rel="stylesheet" href="login.css">
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CODEXEC — Login</title>
+    <link rel="stylesheet" href="login.css" />
+  </head>
+  <body>
+    <div class="grid-bg"></div>
 
-  <div class="grid-bg"></div>
+    <div class="card">
+      <div class="logo">CODE<span>EXEC</span></div>
+      <div class="tagline"></div>
 
-  <div class="card">
+      <div class="tabs">
+        <button class="tab active" id="tab-login" onclick="switchTab('login')">
+          Log In
+        </button>
+        <button class="tab" id="tab-signup" onclick="switchTab('signup')">
+          Sign Up
+        </button>
+      </div>
 
-    <div class="logo">CODE<span>EXEC</span></div>
-    <div class="tagline"></div>
+      <!-- Login -->
+      <div class="panel active" id="panel-login">
+        <div class="field">
+          <div class="field-label">Email</div>
+          <input
+            class="field-input"
+            id="login-email"
+            type="email"
+            placeholder="you@codeverse.io"
+            autocomplete="email"
+          />
+        </div>
+        <div class="field">
+          <div class="field-label">
+            Password <a class="forgot" href="#">Forgot?</a>
+          </div>
+          <input
+            class="field-input"
+            id="login-password"
+            type="password"
+            placeholder="••••••••"
+            autocomplete="current-password"
+          />
+        </div>
+        <div class="remember">
+          <label class="check-label">
+            <input type="checkbox" />
+            <span class="check-box"></span>
+            Keep me logged in
+          </label>
+        </div>
+        <button class="btn-submit" onclick="handleLogin()">Set Sail →</button>
+        <div class="or-line"><span>or</span></div>
+        <div class="oauth-row">
+          <button class="oauth-btn" onclick="oauthLogin('github')">
+            GitHub
+          </button>
+          <button class="oauth-btn" onclick="oauthLogin('google')">
+            &nbsp;Google
+          </button>
+        </div>
+      </div>
 
-    <div class="tabs">
-      <button class="tab active" id="tab-login" onclick="switchTab('login')">Log In</button>
-      <button class="tab" id="tab-signup" onclick="switchTab('signup')">Sign Up</button>
+      <!-- Signup -->
+      <div class="panel" id="panel-signup">
+        <div class="field">
+          <div class="field-label">Username</div>
+          <input
+            class="field-input"
+            id="signup-name"
+            type="text"
+            placeholder="devlancer"
+            autocomplete="username"
+          />
+        </div>
+        <div class="field">
+          <div class="field-label">Email</div>
+          <input
+            class="field-input"
+            id="signup-email"
+            type="email"
+            placeholder="you@codeverse.io"
+            autocomplete="email"
+          />
+        </div>
+        <div class="field">
+          <div class="field-label">Password</div>
+          <input
+            class="field-input"
+            id="signup-password"
+            type="password"
+            placeholder="Min. 8 characters"
+            autocomplete="new-password"
+          />
+        </div>
+        <div class="strength-wrap" id="sw">
+          <div class="strength-bar">
+            <div class="strength-fill" id="sf"></div>
+          </div>
+          <div class="strength-label" id="sl">WEAK</div>
+        </div>
+        <button class="btn-submit" onclick="handleSignup()">
+          Begin Voyage →
+        </button>
+        <p class="terms">
+          By signing up you agree to our <a href="#">Terms</a> and
+          <a href="#">Privacy Policy</a>.
+        </p>
+      </div>
+
+      <div class="foot">// CODEXEC &nbsp;·&nbsp; CODEVERSE OCEAN ⚡</div>
     </div>
 
-    <!-- Login -->
-    <div class="panel active" id="panel-login">
-      <div class="field">
-        <div class="field-label">Email</div>
-        <input class="field-input" id="login-email" type="email" placeholder="you@codeverse.io" autocomplete="email" />
-      </div>
-      <div class="field">
-        <div class="field-label">Password <a class="forgot" href="#">Forgot?</a></div>
-        <input class="field-input" id="login-password" type="password" placeholder="••••••••" autocomplete="current-password" />
-      </div>
-      <div class="remember">
-        <label class="check-label">
-          <input type="checkbox" />
-          <span class="check-box"></span>
-          Keep me logged in
-        </label>
-      </div>
-      <button class="btn-submit" onclick="handleLogin()">Set Sail →</button>
-      <div class="or-line"><span>or</span></div>
-      <div class="oauth-row">
-        <button class="oauth-btn" onclick="oauthLogin('github')">GitHub</button>
-        <button class="oauth-btn" onclick="oauthLogin('google')">&nbsp;Google</button>
-      </div>
-    </div>
+    <div class="toast" id="toast"></div>
 
-    <!-- Signup -->
-    <div class="panel" id="panel-signup">
-      <div class="field">
-        <div class="field-label">Username</div>
-        <input class="field-input" id="signup-name" type="text" placeholder="devlancer" autocomplete="username" />
-      </div>
-      <div class="field">
-        <div class="field-label">Email</div>
-        <input class="field-input" id="signup-email" type="email" placeholder="you@codeverse.io" autocomplete="email" />
-      </div>
-      <div class="field">
-        <div class="field-label">Password</div>
-        <input class="field-input" id="signup-password" type="password" placeholder="Min. 8 characters" autocomplete="new-password" />
-      </div>
-      <div class="strength-wrap" id="sw">
-        <div class="strength-bar"><div class="strength-fill" id="sf"></div></div>
-        <div class="strength-label" id="sl">WEAK</div>
-      </div>
-      <button class="btn-submit" onclick="handleSignup()">Begin Voyage →</button>
-      <p class="terms">By signing up you agree to our <a href="#">Terms</a> and <a href="#">Privacy Policy</a>.</p>
-    </div>
-
-    <div class="foot">// CODEXEC &nbsp;·&nbsp; CODEVERSE OCEAN ⚡</div>
-
-  </div>
-
-  <div class="toast" id="toast"></div>
-
-  <script>
-    function switchTab(t) {
-      document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
-      document.getElementById('tab-' + t).classList.add('active');
-      document.getElementById('panel-' + t).classList.add('active');
-    }
-    document.getElementById('signup-password').addEventListener('input', function () {
-      const v = this.value, sw = document.getElementById('sw'),
-            sf = document.getElementById('sf'), sl = document.getElementById('sl');
-      if (!v) { sw.style.display = 'none'; return; }
-      sw.style.display = 'flex';
-      let s = 0;
-      if (v.length >= 8) s++;
-      if (/[A-Z]/.test(v)) s++;
-      if (/[0-9]/.test(v)) s++;
-      if (/[^A-Za-z0-9]/.test(v)) s++;
-      const lvls = [
-        { w:'25%', c:'#e84a1a', t:'WEAK' },
-        { w:'50%', c:'#f5c842', t:'FAIR' },
-        { w:'75%', c:'#3b9eff', t:'GOOD' },
-        { w:'100%',c:'#28c840', t:'STRONG'}
-      ];
-      const l = lvls[s-1] || lvls[0];
-      sf.style.width = l.w; sf.style.background = l.c;
-      sl.textContent = l.t; sl.style.color = l.c;
-    });
-    function showToast(msg, ok=true) {
-      const t = document.getElementById('toast');
-      t.textContent = msg;
-      t.className = 'toast show ' + (ok ? 'ok' : 'err');
-      setTimeout(() => t.className = 'toast', 2800);
-    }
-    function handleLogin() {
-      const e = document.getElementById('login-email').value.trim(),
-            p = document.getElementById('login-password').value;
-      if (!e || !p) { showToast('Fill in all fields.', false); return; }
-      showToast('Authenticating…');
-      setTimeout(() => window.location.href = 'map.html', 900);
-    }
-    function handleSignup() {
-      const n = document.getElementById('signup-name').value.trim(),
-            e = document.getElementById('signup-email').value.trim(),
-            p = document.getElementById('signup-password').value;
-      if (!n || !e || !p) { showToast('Fill in all fields.', false); return; }
-      if (p.length < 8) { showToast('Password must be 8+ chars.', false); return; }
-      showToast('Creating account…');
-      setTimeout(() => window.location.href = 'map.html', 900);
-    }
-    function oauthLogin(p) {
-      showToast('Connecting with ' + p.charAt(0).toUpperCase() + p.slice(1) + '…');
-      setTimeout(() => window.location.href = 'map.html', 900);
-    }
-  </script>
-</body>
+    <script>
+      function switchTab(t) {
+        document
+          .querySelectorAll(".tab")
+          .forEach((b) => b.classList.remove("active"));
+        document
+          .querySelectorAll(".panel")
+          .forEach((p) => p.classList.remove("active"));
+        document.getElementById("tab-" + t).classList.add("active");
+        document.getElementById("panel-" + t).classList.add("active");
+      }
+      function showToast(msg, ok = true) {
+        const t = document.getElementById("toast");
+        t.textContent = msg;
+        t.className = "toast show " + (ok ? "ok" : "err");
+        setTimeout(() => (t.className = "toast"), 2800);
+      }
+      function handleLogin() {
+        const e = document.getElementById("login-email").value.trim(),
+          p = document.getElementById("login-password").value;
+        if (!e || !p) {
+          showToast("Fill in all fields.", false);
+          return;
+        }
+        showToast("Authenticating…");
+        setTimeout(() => (window.location.href = "index.html"), 900);
+      }
+      function handleSignup() {
+        const n = document.getElementById("signup-name").value.trim(),
+          e = document.getElementById("signup-email").value.trim(),
+          p = document.getElementById("signup-password").value;
+        if (!n || !e || !p) {
+          showToast("Fill in all fields.", false);
+          return;
+        }
+        if (p.length < 8) {
+          showToast("Password must be 8+ chars.", false);
+          return;
+        }
+        showToast("Creating account…");
+        setTimeout(() => (window.location.href = "map.html"), 900);
+      }
+      function oauthLogin(p) {
+        showToast(
+          "Connecting with " + p.charAt(0).toUpperCase() + p.slice(1) + "…",
+        );
+        setTimeout(() => (window.location.href = "map.html"), 900);
+      }
+    </script>
+  </body>
 </html>

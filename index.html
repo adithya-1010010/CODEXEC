@@ -113,6 +113,7 @@
   </section>
 
   <script>
+    //scroll to the map section of the HomePage
     document.getElementById('heroGetStarted').addEventListener('click', function() {
       document.getElementById('map-section').scrollIntoView({ behavior: 'smooth' });
     });
@@ -124,8 +125,8 @@
       el.innerHTML = `<img src="${saved}" alt="avatar">`;
     }
 
-
   // the search bar function
+  //storage of all the web pages(array of objects)
   const NAV_PAGES = [
     { label:"World Map", tag:"PAGE", href:"map.html" },
     { label:"HTML Island", tag:"ISLAND", href:"html-island.html" },
@@ -136,6 +137,8 @@
     { label:"Settings", tag:"PAGE", href:"settings.html" },
     { label:"About Us", tag:"PAGE", href:"about.html" },
   ];
+
+  //filter function
 function navSearch(q) {
   const box = document.getElementById("search-results");
   if(!q.trim()){ 
@@ -160,6 +163,7 @@ if (matches.length) {
 
 }
 
+//display up the thing
 box.classList.add("open");
 }
 
@@ -167,6 +171,8 @@ box.classList.add("open");
 function closeSearch() {
   document.getElementById("search-results").classList.remove("open");
 }
+
+console.log(location.href);
 
 </script>
 </body>
